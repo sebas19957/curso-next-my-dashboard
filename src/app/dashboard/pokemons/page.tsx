@@ -3,7 +3,7 @@ import { PokemonsResponse } from "@/app/pokemons/interfaces/pokemos-response";
 import { SimplePokemon } from "@/app/pokemons/interfaces/simple-pokemon";
 import { Metadata } from "next";
 
-export const metadata = {
+export const metadata: Metadata = {
   title: "Pokémons",
   description: "Página con la lista de pokémones",
 };

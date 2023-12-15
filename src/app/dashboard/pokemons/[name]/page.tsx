@@ -1,22 +1,28 @@
 import { Pokemon } from "@/app/pokemons/interfaces/pokemon";
+import { PokemonsResponse } from "@/app/pokemons/interfaces/pokemos-response";
 import { Metadata } from "next";
 import Image from "next/image";
 import { notFound } from "next/navigation";
 
 interface Props {
-  params: { id: string };
+  params: { name: string };
 }
 
 export async function generateStaticParams() {
-  const staticPokemons = Array.from({ length: 151 }).map((v, i) => `${i + 1}`);
-  return staticPokemons.map((id) => ({
-    id,
+  const data: PokemonsResponse = await fetch(
+    `https://pokeapi.co/api/v2/pokemon?limit=151`
+  ).then((res) => res.json());
+
+  const staticPokemons = data.results.map((pokemon) => ({
+    name: pokemon.name,
   }));
+
+  return staticPokemons;
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   try {
-    const { name } = await getPokemon(params.id);
+    const { name } = await getPokemon(params.name);
 
     return {
       title: `Pokémon | ${name}`,
@@ -30,9 +36,9 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   }
 }
 
-const getPokemon = async (id: string): Promise<Pokemon> => {
+const getPokemon = async (name: string): Promise<Pokemon> => {
   try {
-    const pokemon = await fetch(`https://pokeapi.co/api/v2/pokemon/${id}`, {
+    const pokemon = await fetch(`https://pokeapi.co/api/v2/pokemon/${name}`, {
       // cache: "force-cache",
       next: {
         revalidate: 60 * 60 * 30 * 2, //Se revalida cada 2 meses
@@ -45,8 +51,8 @@ const getPokemon = async (id: string): Promise<Pokemon> => {
   }
 };
 
-const PokemonPage = async ({ params }: Props) => {
-  const pokemon = await getPokemon(params.id);
+const PokemonNamePage = async ({ params }: Props) => {
+  const pokemon = await getPokemon(params.name);
 
   return (
     <div className="flex pt-20 mt-5 flex-col items-center text-slate-800">
@@ -140,4 +146,4 @@ const PokemonPage = async ({ params }: Props) => {
   );
 };
 
-export default PokemonPage;
+export default PokemonNamePage;

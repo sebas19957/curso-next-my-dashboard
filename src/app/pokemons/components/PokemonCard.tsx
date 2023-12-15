@@ -28,7 +28,7 @@ const PokemonCard = ({ pokemon }: Props) => {
           </p>
 
           <Link
-            href={`/dashboard/pokemon/${id}`}
+            href={`/dashboard/pokemons/${name}`}
             className=" h-10 bg-blue-300 p-2 rounded-xl hover:bg-blue-500 transition-colors duration-50 hover:animate-pulse ease-out text-white font-semibold"
           >
             Más información
@@ -50,7 +50,6 @@ const PokemonCard = ({ pokemon }: Props) => {
               <path stroke="none" d="M0 0h24v24H0z" fill="none" />
               <path d="M19.5 12.572l-7.5 7.428l-7.5 -7.428a5 5 0 1 1 7.5 -6.566a5 5 0 1 1 7.5 6.572" />
             </svg>
-            {/* <span>No es favorito</span> */}
           </div>
         </div>
       </div>
